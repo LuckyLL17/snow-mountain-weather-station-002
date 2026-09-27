@@ -9,6 +9,7 @@ build/
 *.log
 .DS_Store
 .idea/
+server/data/
 .vscode/*
 !.vscode/extensions.json
 !.vscode/settings.json

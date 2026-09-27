@@ -6,3 +6,23 @@ React + Vite + TypeScript 的高海拔自动气象站监控基础项目。提供
 npm install
 npm run dev
 ```
+
+## 值守交班报告
+
+换班时，值守员可从**当前站点读数**一键生成交班报告：
+
+- 新建报告时捕获站点数据**快照**（全部传感器读数、环境指标、观测动态、设备计数），随报告持久化保存；之后站点数据变化不影响已生成的报告。
+- 可填写交班/接班值守员、选择班次、补充交班备注，勾选**重点传感器**与**重点观测 / 未处理风险**（未处理的告警类动态默认勾上）。
+- 支持**保存草稿**（必填项可后补）与**提交记录**（需班次、交班人、接班人齐全）；已提交记录不可修改，草稿可随时重新打开继续编辑后提交。
+- 历史报告列表可重新打开，查看创建时的完整快照。
+
+报告保存在服务端 `server/data/handover-reports.json`（已加入 .gitignore），接口：
+
+| 方法 | 路径 | 说明 |
+| --- | --- | --- |
+| GET | `/api/handover-reports` | 报告列表（最新在前） |
+| GET | `/api/handover-reports/:id` | 报告详情（含数据快照） |
+| POST | `/api/handover-reports[?submit=1]` | 新建草稿 / 新建并提交 |
+| PUT | `/api/handover-reports/:id[?submit=1]` | 更新草稿 / 提交草稿（已提交返回 409） |
+
+> 服务端使用 TypeScript 原生类型剥离运行，需要 Node ≥ 22.6（`node --experimental-strip-types`）。
